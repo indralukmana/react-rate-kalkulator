@@ -1,0 +1,7 @@
+{
+	"extends": ["plugin:cypress/recommended", "react-app"],
+	"plugins": ["cypress"],
+	"env": {
+		"cypress/globals": true
+	}
+}
