@@ -23,20 +23,29 @@ function App() {
 	const [workHour, setWorkHour] = useState(40);
 	const [weeklyRate, setWeeklyRate] = useState(400);
 	const [monthlyRate, setMonthlyRate] = useState(1600);
+	const [yearlyRate, setYearlyRate] = useState(19200);
 
 	const tryConvert = ({ name, value }) => {
 		if (name === 'hourly-rate') {
 			setHourlyRate(value);
 			setWeeklyRate(value * workHour);
 			setMonthlyRate(value * workHour * 4);
+			setYearlyRate(value * workHour * 4 * 12);
 		} else if (name === 'weekly-rate') {
 			setWeeklyRate(value);
 			setHourlyRate(value / workHour);
 			setMonthlyRate(value * 4);
+			setYearlyRate(value / 12 / 4);
 		} else if (name === 'monthly-rate') {
 			setMonthlyRate(value);
 			setWeeklyRate(value / 4);
 			setHourlyRate(value / workHour / 4);
+			setYearlyRate(value * 12);
+		} else if (name === 'yearly-rate') {
+			setYearlyRate(value);
+			setMonthlyRate(value / 12);
+			setWeeklyRate(value / 12 / 4);
+			setHourlyRate(value / 12 / 4 / workHour);
 		}
 	};
 
@@ -86,6 +95,16 @@ function App() {
 					name="monthly-rate"
 					inputProps={{ 'data-testid': 'monthly-rate' }}
 					value={monthlyRate}
+					onChange={event => tryConvert(event.target)}
+				/>
+				<TextField
+					variant="outlined"
+					margin="normal"
+					id="yearly-rate"
+					label="Yearly Rate"
+					name="yearly-rate"
+					inputProps={{ 'data-testid': 'yearly-rate' }}
+					value={yearlyRate}
 					onChange={event => tryConvert(event.target)}
 				/>
 			</div>
