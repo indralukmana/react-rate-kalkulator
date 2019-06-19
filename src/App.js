@@ -22,14 +22,21 @@ function App() {
 	const [hourlyRate, setHourlyRate] = useState(10);
 	const [workHour, setWorkHour] = useState(40);
 	const [weeklyRate, setWeeklyRate] = useState(400);
+	const [monthlyRate, setMonthlyRate] = useState(1600);
 
 	const tryConvert = ({ name, value }) => {
 		if (name === 'hourly-rate') {
 			setHourlyRate(value);
 			setWeeklyRate(value * workHour);
+			setMonthlyRate(value * workHour * 4);
 		} else if (name === 'weekly-rate') {
-			setHourlyRate(value / workHour);
 			setWeeklyRate(value);
+			setHourlyRate(value / workHour);
+			setMonthlyRate(value * 4);
+		} else if (name === 'monthly-rate') {
+			setMonthlyRate(value);
+			setWeeklyRate(value / 4);
+			setHourlyRate(value / workHour / 4);
 		}
 	};
 
@@ -67,9 +74,18 @@ function App() {
 					id="weekly-rate"
 					label="Weekly Rate"
 					name="weekly-rate"
-					autoFocus
 					inputProps={{ 'data-testid': 'weekly-rate' }}
 					value={weeklyRate}
+					onChange={event => tryConvert(event.target)}
+				/>
+				<TextField
+					variant="outlined"
+					margin="normal"
+					id="monthly-rate"
+					label="Monthly Rate"
+					name="monthly-rate"
+					inputProps={{ 'data-testid': 'monthly-rate' }}
+					value={monthlyRate}
 					onChange={event => tryConvert(event.target)}
 				/>
 			</div>

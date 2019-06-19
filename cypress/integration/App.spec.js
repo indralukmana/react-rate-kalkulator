@@ -8,6 +8,7 @@ describe('Test the kalkulator', () => {
 		cy.get('input[data-testid=hourly-rate]').should('have.value', '10');
 		cy.get('input[data-testid=work-hours').should('have.value', '40');
 		cy.get('input[data-testid=weekly-rate]').should('have.value', '400');
+		cy.get('input[data-testid=monthly-rate]').should('have.value', '1600');
 
 		cy.get('input[data-testid=hourly-rate]')
 			.should('have.value', '10')
