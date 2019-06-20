@@ -20,37 +20,27 @@ function App() {
 	const classes = useStyles();
 	const [hourlyRate, setHourlyRate] = useState(10);
 	const [workHour, setWorkHour] = useState(40);
-	const [weeklyRate, setWeeklyRate] = useState(400);
-	const [monthlyRate, setMonthlyRate] = useState(1600);
-	const [yearlyRate, setYearlyRate] = useState(19200);
 
-	const tryConvert = ({ name, value }) => {
-		if (name === 'work-hours') {
-			setWorkHour(value);
-			setWeeklyRate(value * hourlyRate);
-			setMonthlyRate(value * hourlyRate * 4);
-			setYearlyRate(value * hourlyRate * 4 * 12);
-		} else if (name === 'hourly-rate') {
-			setHourlyRate(value);
-			setWeeklyRate(value * workHour);
-			setMonthlyRate(value * workHour * 4);
-			setYearlyRate(value * workHour * 4 * 12);
-		} else if (name === 'weekly-rate') {
-			setWeeklyRate(value);
-			setHourlyRate(value / workHour);
-			setMonthlyRate(value * 4);
-			setYearlyRate(value * 4 * 12);
-		} else if (name === 'monthly-rate') {
-			setMonthlyRate(value);
-			setWeeklyRate(value / 4);
-			setHourlyRate(value / workHour / 4);
-			setYearlyRate(value * 12);
-		} else if (name === 'yearly-rate') {
-			setYearlyRate(value);
-			setMonthlyRate(value / 12);
-			setWeeklyRate(value / 12 / 4);
-			setHourlyRate(value / 12 / 4 / workHour);
-		}
+	const convertTo = name => {
+		const rate = {
+			weekly: workHour * hourlyRate,
+			monthly: workHour * hourlyRate * 4,
+			yearly: workHour * hourlyRate * 4 * 12
+		};
+
+		return rate[name] || 0;
+	};
+
+	const convertFrom = event => {
+		const { name, value } = event.target;
+
+		const rate = {
+			'weekly-rate': value / workHour,
+			'monthly-rate': value / 4 / workHour,
+			'yearly-rate': value / 12 / 4 / workHour
+		};
+
+		setHourlyRate(rate[name] || 0);
 	};
 
 	return (
@@ -68,8 +58,8 @@ function App() {
 					name="hourly-rate"
 					autoFocus
 					inputProps={{ 'data-testid': 'hourly-rate' }}
-					value={hourlyRate ? hourlyRate : 0}
-					onChange={event => tryConvert(event.target)}
+					value={hourlyRate || 0}
+					onChange={event => setHourlyRate(event.target.value)}
 				/>
 				<TextField
 					variant="outlined"
@@ -78,8 +68,8 @@ function App() {
 					label="Work Hours"
 					name="work-hours"
 					inputProps={{ 'data-testid': 'work-hours' }}
-					value={workHour}
-					onChange={event => tryConvert(event.target)}
+					value={workHour || 0}
+					onChange={event => setWorkHour(event.target.value)}
 				/>
 				<TextField
 					variant="outlined"
@@ -88,8 +78,8 @@ function App() {
 					label="Weekly Rate"
 					name="weekly-rate"
 					inputProps={{ 'data-testid': 'weekly-rate' }}
-					value={weeklyRate ? weeklyRate : 0}
-					onChange={event => tryConvert(event.target)}
+					value={convertTo('weekly')}
+					onChange={event => convertFrom(event)}
 				/>
 				<TextField
 					variant="outlined"
@@ -98,8 +88,8 @@ function App() {
 					label="Monthly Rate"
 					name="monthly-rate"
 					inputProps={{ 'data-testid': 'monthly-rate' }}
-					value={monthlyRate ? monthlyRate : 0}
-					onChange={event => tryConvert(event.target)}
+					value={convertTo('monthly')}
+					onChange={event => convertFrom(event)}
 				/>
 				<TextField
 					variant="outlined"
@@ -108,8 +98,8 @@ function App() {
 					label="Yearly Rate"
 					name="yearly-rate"
 					inputProps={{ 'data-testid': 'yearly-rate' }}
-					value={yearlyRate ? yearlyRate : 0}
-					onChange={event => tryConvert(event.target)}
+					value={convertTo('yearly')}
+					onChange={event => convertFrom(event)}
 				/>
 			</div>
 		</Container>
