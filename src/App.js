@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 import {
 	CssBaseline,
@@ -8,6 +8,7 @@ import {
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
+// Material UI CSS in JS Styling
 const useStyles = makeStyles(theme => ({
 	paper: {
 		marginTop: theme.spacing(8), // = 4 * 2
@@ -25,29 +26,53 @@ function App() {
 	const [monthlyRate, setMonthlyRate] = useState(1600);
 	const [yearlyRate, setYearlyRate] = useState(19200);
 
-	const tryConvert = ({ name, value }) => {
-		if (name === 'hourly-rate') {
-			setHourlyRate(value);
-			setWeeklyRate(value * workHour);
-			setMonthlyRate(value * workHour * 4);
-			setYearlyRate(value * workHour * 4 * 12);
-		} else if (name === 'weekly-rate') {
-			setWeeklyRate(value);
-			setHourlyRate(value / workHour);
-			setMonthlyRate(value * 4);
-			setYearlyRate(value / 12 / 4);
-		} else if (name === 'monthly-rate') {
-			setMonthlyRate(value);
-			setWeeklyRate(value / 4);
-			setHourlyRate(value / workHour / 4);
-			setYearlyRate(value * 12);
-		} else if (name === 'yearly-rate') {
-			setYearlyRate(value);
-			setMonthlyRate(value / 12);
-			setWeeklyRate(value / 12 / 4);
-			setHourlyRate(value / 12 / 4 / workHour);
-		}
-	};
+	// useEffect(() => {
+	// 	setWeeklyRate(hourlyRate * workHour);
+	// 	setMonthlyRate(hourlyRate * workHour * 4);
+	// 	setYearlyRate(hourlyRate * workHour * 4 * 12);
+	// }, [hourlyRate, workHour]);
+
+	// useEffect(() => {
+	// 	setHourlyRate(weeklyRate / workHour);
+	// 	setMonthlyRate(weeklyRate * 4);
+	// 	setYearlyRate(weeklyRate * 4 * 12);
+	// }, [weeklyRate, workHour]);
+
+	// useEffect(() => {
+	// 	setHourlyRate(monthlyRate / 4 / workHour);
+	// 	setWeeklyRate(monthlyRate / 4);
+	// 	setYearlyRate(monthlyRate * 12);
+	// }, [monthlyRate, workHour]);
+
+	// useEffect(() => {
+	// 	setHourlyRate(yearlyRate / 12 / 4 / workHour);
+	// 	setWeeklyRate(yearlyRate / 12 / 4);
+	// 	setMonthlyRate(yearlyRate / 12);
+	// }, [yearlyRate, workHour]);
+
+	// const tryConvert = ({ name, value }) => {
+	// 	if (name === 'hourly-rate') {
+	// 		setHourlyRate(value);
+	// setWeeklyRate(value * workHour);
+	// setMonthlyRate(value * workHour * 4);
+	// setYearlyRate(value * workHour * 4 * 12);
+	// } else if (name === 'weekly-rate') {
+	// 	setWeeklyRate(value);
+	// setHourlyRate(value / workHour);
+	// setMonthlyRate(value * 4);
+	// setYearlyRate(value / 12 / 4);
+	// } else if (name === 'monthly-rate') {
+	// 	setMonthlyRate(value);
+	// setWeeklyRate(value / 4);
+	// setHourlyRate(value / workHour / 4);
+	// setYearlyRate(value * 12);
+	// } else if (name === 'yearly-rate') {
+	// 	setYearlyRate(value);
+	// 	setMonthlyRate(value / 12);
+	// 	setWeeklyRate(value / 12 / 4);
+	// 	setHourlyRate(value / 12 / 4 / workHour);
+	// }
+	// };
 
 	return (
 		<Container component="main" maxWidth="xs">
@@ -65,7 +90,8 @@ function App() {
 					autoFocus
 					inputProps={{ 'data-testid': 'hourly-rate' }}
 					value={hourlyRate}
-					onChange={event => tryConvert(event.target)}
+					// onChange={event => tryConvert(event.target)}
+					onChange={event => setHourlyRate(event.target.value)}
 				/>
 				<TextField
 					variant="outlined"
@@ -75,6 +101,7 @@ function App() {
 					name="work-hours"
 					inputProps={{ 'data-testid': 'work-hours' }}
 					value={workHour}
+					// onChange={event => setWorkHour(event.target.value)}
 					onChange={event => setWorkHour(event.target.value)}
 				/>
 				<TextField
@@ -85,7 +112,8 @@ function App() {
 					name="weekly-rate"
 					inputProps={{ 'data-testid': 'weekly-rate' }}
 					value={weeklyRate}
-					onChange={event => tryConvert(event.target)}
+					// onChange={event => tryConvert(event.target)}
+					onChange={event => setWeeklyRate(event.target.value)}
 				/>
 				<TextField
 					variant="outlined"
@@ -95,7 +123,8 @@ function App() {
 					name="monthly-rate"
 					inputProps={{ 'data-testid': 'monthly-rate' }}
 					value={monthlyRate}
-					onChange={event => tryConvert(event.target)}
+					// onChange={event => tryConvert(event.target)}
+					onChange={event => setMonthlyRate(event.target.value)}
 				/>
 				<TextField
 					variant="outlined"
@@ -105,7 +134,8 @@ function App() {
 					name="yearly-rate"
 					inputProps={{ 'data-testid': 'yearly-rate' }}
 					value={yearlyRate}
-					onChange={event => tryConvert(event.target)}
+					// onChange={event => tryConvert(event.target)}
+					onChange={event => setYearlyRate(event.target.value)}
 				/>
 			</div>
 		</Container>
