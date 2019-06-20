@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import './App.css';
 import {
 	CssBaseline,
 	Container,
@@ -26,7 +25,12 @@ function App() {
 	const [yearlyRate, setYearlyRate] = useState(19200);
 
 	const tryConvert = ({ name, value }) => {
-		if (name === 'hourly-rate') {
+		if (name === 'work-hours') {
+			setWorkHour(value);
+			setWeeklyRate(value * hourlyRate);
+			setMonthlyRate(value * hourlyRate * 4);
+			setYearlyRate(value * hourlyRate * 4 * 12);
+		} else if (name === 'hourly-rate') {
 			setHourlyRate(value);
 			setWeeklyRate(value * workHour);
 			setMonthlyRate(value * workHour * 4);
@@ -35,7 +39,7 @@ function App() {
 			setWeeklyRate(value);
 			setHourlyRate(value / workHour);
 			setMonthlyRate(value * 4);
-			setYearlyRate(value / 12 / 4);
+			setYearlyRate(value * 4 * 12);
 		} else if (name === 'monthly-rate') {
 			setMonthlyRate(value);
 			setWeeklyRate(value / 4);
@@ -64,7 +68,7 @@ function App() {
 					name="hourly-rate"
 					autoFocus
 					inputProps={{ 'data-testid': 'hourly-rate' }}
-					value={hourlyRate}
+					value={hourlyRate ? hourlyRate : 0}
 					onChange={event => tryConvert(event.target)}
 				/>
 				<TextField
@@ -75,7 +79,7 @@ function App() {
 					name="work-hours"
 					inputProps={{ 'data-testid': 'work-hours' }}
 					value={workHour}
-					onChange={event => setWorkHour(event.target.value)}
+					onChange={event => tryConvert(event.target)}
 				/>
 				<TextField
 					variant="outlined"
@@ -84,7 +88,7 @@ function App() {
 					label="Weekly Rate"
 					name="weekly-rate"
 					inputProps={{ 'data-testid': 'weekly-rate' }}
-					value={weeklyRate}
+					value={weeklyRate ? weeklyRate : 0}
 					onChange={event => tryConvert(event.target)}
 				/>
 				<TextField
@@ -94,7 +98,7 @@ function App() {
 					label="Monthly Rate"
 					name="monthly-rate"
 					inputProps={{ 'data-testid': 'monthly-rate' }}
-					value={monthlyRate}
+					value={monthlyRate ? monthlyRate : 0}
 					onChange={event => tryConvert(event.target)}
 				/>
 				<TextField
@@ -104,7 +108,7 @@ function App() {
 					label="Yearly Rate"
 					name="yearly-rate"
 					inputProps={{ 'data-testid': 'yearly-rate' }}
-					value={yearlyRate}
+					value={yearlyRate ? yearlyRate : 0}
 					onChange={event => tryConvert(event.target)}
 				/>
 			</div>
